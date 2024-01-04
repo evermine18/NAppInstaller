@@ -1,6 +1,8 @@
+mod counter;
 use iced::executor;
 use iced::{Application, Command, Element, Settings, Theme};
-
+use iced::widget::{Button, text};
+use counter::Counter;
 fn main() {
     GUIApp::run(Settings::default()).expect("Could not run application");
 }
@@ -12,7 +14,6 @@ impl Application for GUIApp {
     type Flags = ();
     type Message = ();
     type Theme = Theme;
-
     fn new(_flags: ()) -> (GUIApp, Command<Self::Message>) {
         (GUIApp, Command::none())
     }
@@ -26,6 +27,15 @@ impl Application for GUIApp {
     }
 
     fn view(&self) -> Element<Self::Message> {
-        "Test".into()
+        button("Install").into()
     }
+
+    
+}
+fn button<'a, Message: Clone>(label: &str) -> Button<'a, Message> {
+    iced::widget::button(
+        text(label),
+    )
+    .padding(12)
+    .width(100)
 }
