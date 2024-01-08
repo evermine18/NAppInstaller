@@ -1,6 +1,6 @@
-use iced::executor;
+use iced::{executor, Length, Alignment};
 use iced::{Application, Command, Element, Settings, Theme};
-use iced::widget::{button, Button,Column, Text, ProgressBar, text};
+use iced::widget::{button, Button,Column, Text, ProgressBar, text, Row, Space};
 
 fn main() {
     GUIApp::run(Settings::default()).expect("Could not run application");
@@ -11,7 +11,7 @@ pub enum Message{
 }
 
 struct GUIApp{
-    button: iced::widget::button::State,
+
 }
 
 impl Application for GUIApp {
@@ -20,7 +20,7 @@ impl Application for GUIApp {
     type Message = Message;
     type Theme = Theme;
     fn new(_flags: ()) -> (GUIApp, Command<Self::Message>) {
-        (GUIApp{ button: iced::widget::button::State::new()}, Command::none())
+        (GUIApp{ }, Command::none())
     }
 
     fn title(&self) -> String {
@@ -37,14 +37,22 @@ impl Application for GUIApp {
     }
 
     fn view(&self) -> Element<Self::Message> {
-        let content = Column::new()
-            .spacing(20) // Spacing between elements
+        let button_container = Row::new()
+            .spacing(20)
             .push(Button::new(Text::new("Install")).on_press(Message::ButtonPressed))
-            .push(Button::new(Text::new("Cancel"))) 
-            .push(Text::new("App directory"))
-            .push(ProgressBar::new(0.0..=100.0, 50.0));
-
-        // Convert the layout into an Element to be displayed
+            .push(Button::new(Text::new("Cancel")))
+            .align_items(Alignment::Center); // Center the contents horizontally
+    
+        let content = Column::new()
+            .push(Text::new("app_name").size(50)) // App name
+            .push(Space::with_height(Length::FillPortion(1))) // Spacer to center vertically
+            .push(button_container)
+            .push(Space::with_height(Length::FillPortion(1))) // Spacer to center vertically
+            .width(Length::Fill)   // Filling the width of the window
+            .height(Length::Fill)  // Same for the height
+            .align_items(Alignment::Center); // Center the contents horizontally
+    
+        // Convert the content into a container with a padding
         content.into()
     }
 
