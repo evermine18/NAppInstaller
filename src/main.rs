@@ -1,9 +1,13 @@
+mod installer;
 use iced::{executor, Length, Alignment};
 use iced::{Application, Command, Element, Settings, Theme};
 use iced::widget::{button, Button,Column, Text, ProgressBar, text, Row, Space};
+use installer::install;
 
 fn main() {
-    GUIApp::run(Settings::default()).expect("Could not run application");
+    //GUIApp::run(Settings::default()).expect("Could not run application");
+    let app_name = String::from("test");
+    install(&app_name);
 }
 #[derive(Debug, Clone)]
 pub enum Message{
