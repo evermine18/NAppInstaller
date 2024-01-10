@@ -12,5 +12,6 @@ fn create_shortcut(image_dir: &String){
     let current_dir = env::current_dir().expect("Unable to get current directory");
     let template_path = current_dir.join("src/static/template.lnk");
     let mut data = lnkloader(&template_path.to_string_lossy().to_string()).unwrap_or("".to_string());
+    data = remplace_with_data(data);
     shortcut.write_all(data.as_bytes()).expect("Unable to write to shortcut");
 }
