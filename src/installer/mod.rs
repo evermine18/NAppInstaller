@@ -1,13 +1,10 @@
 mod lnktemplate_loader;
-use std::{fs::File, fs::create_dir_all, fs::copy, io::Write, env, process::Command};
+mod directory_tools;
 use lnktemplate_loader::{lnkloader, remplace_with_data};
+use directory_tools as dt;
 
 pub fn install(target: &String){
-    let appdir_path = create_app_directory(target);
-    create_shortcut(target);
-    move_appimage(target);
-    mount_appimage(&appdir_path,target);
-}
+    let home_dir = dt::get_home_dir();
 
 fn create_shortcut(target: &String){
     let mut shortcut = File::create("shortcut.lnk")
