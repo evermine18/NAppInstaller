@@ -7,6 +7,11 @@ use directory_tools as dt;
 pub fn install(target: &String){
     let home_dir = dt::get_home_dir();
     let app_dir = create_app_directory(target,&home_dir);
+    move_appimage(target, &app_dir);
+    mount_appimage(&app_dir);
+    create_shortcut(target, &app_dir);
+    println!("{}",dt::get_home_dir().display());
+}
 
 fn create_shortcut(target: &String){
     let mut shortcut = File::create("shortcut.lnk")
@@ -31,23 +36,21 @@ fn create_app_directory(target: &String, home_path : &Path) -> PathBuf{
     }
 }
 
-fn move_appimage(tarjet: &String){
+fn move_appimage(tarjet: &String, app_path : &Path){
     let current_dir = env::current_dir().expect("Unable to get current directory"); // Temporary
-    let appdir_path = current_dir.join("app_name/app.AppImage");
-
-    match copy(tarjet, appdir_path) {
+    let appimage_path = app_path.join("app.appimage");
+    match copy(tarjet, appimage_path) {
         Ok(_) => println!("AppImage copied!"),
         Err(e) => println!("Error while copying: {}", e),
     }
 }
 
-fn mount_appimage(appdir_path : &String, target : &String){
-    // TODO : Change the way to obtain the AppImage path, without skipping the first character.
-    let appimage_path = format!("{}{}", appdir_path, target.chars().skip(1).collect::<String>()); 
-    println!("{}", appimage_path);
+fn mount_appimage(app_path : &Path){
+    let appimage_path = app_path.join("app.appimage");
+    println!("{}", appimage_path.to_string_lossy());
     // mount -o loop appimage appdir
     Command::new(appimage_path)
         .arg("--appimage-extract")
-        .current_dir(appdir_path)
+        .current_dir(app_path)
         .status();
 }
