@@ -1,11 +1,12 @@
 mod lnktemplate_loader;
-use std::{fs::File, fs::create_dir_all, fs::copy, io::Write, env};
+use std::{fs::File, fs::create_dir_all, fs::copy, io::Write, env, process::Command};
 use lnktemplate_loader::{lnkloader, remplace_with_data};
 
 pub fn install(target: &String){
+    let appdir_path = create_app_directory(target);
     create_shortcut(target);
-    create_app_directory(target);
     move_appimage(target);
+    mount_appimage(appdir_path);
 }
 
 fn create_shortcut(target: &String){
@@ -17,13 +18,18 @@ fn create_shortcut(target: &String){
     data = remplace_with_data(data);
     shortcut.write_all(data.as_bytes()).expect("Unable to write to shortcut");
 }
-fn create_app_directory(target: &String){
+fn create_app_directory(target: &String) -> String{
 
     let current_dir = env::current_dir().expect("Unable to get current directory"); // Temporary
     let appdir_path = current_dir.join("app_name");
     match create_dir_all(&appdir_path) {
-        Err(why) => println!("! {:?}", why.kind()),
-        Ok(_) => {},
+        Err(why) => {
+            println!("! {:?}", why.kind());
+            "".to_string()
+        },
+        Ok(_) => {
+            appdir_path.to_string_lossy().to_string()
+        },
     }
 }
 
@@ -35,4 +41,15 @@ fn move_appimage(tarjet: &String){
         Ok(_) => println!("AppImage copied!"),
         Err(e) => println!("Error while copying: {}", e),
     }
+}
+
+fn mount_appimage(appdir_path : String){
+    match create_dir_all("/mnt/appimage") {
+        Err(why) => println!("! {:?}", why.kind()),
+        Ok(_) => {},
+    }
+    // mount -o loop appimage appdir
+    Command::new(appdir_path)
+        .arg("--appimage-extract")
+        .status();
 }

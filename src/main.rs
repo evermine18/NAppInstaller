@@ -6,7 +6,7 @@ use installer::install;
 
 fn main() {
     //GUIApp::run(Settings::default()).expect("Could not run application");
-    let app_name = String::from("./aplication.appimage");
+    let app_name = String::from("./app.AppImage");
     install(&app_name);
 }
 #[derive(Debug, Clone)]
