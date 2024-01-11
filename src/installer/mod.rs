@@ -1,10 +1,12 @@
 mod lnktemplate_loader;
 mod directory_tools;
+use std::{fs::File, fs::create_dir_all, fs::copy, io::Write, env, process::Command, path::{Path, PathBuf}};
 use lnktemplate_loader::{lnkloader, remplace_with_data};
 use directory_tools as dt;
 
 pub fn install(target: &String){
     let home_dir = dt::get_home_dir();
+    let app_dir = create_app_directory(target,&home_dir);
 
 fn create_shortcut(target: &String){
     let mut shortcut = File::create("shortcut.lnk")
@@ -16,17 +18,15 @@ fn create_shortcut(target: &String){
     shortcut.write_all(data.as_bytes()).expect("Unable to write to shortcut");
 }
 
-fn create_app_directory(target: &String) -> String{
-
-    let current_dir = env::current_dir().expect("Unable to get current directory"); // Temporary
-    let appdir_path = current_dir.join("app_name");
+fn create_app_directory(target: &String, home_path : &Path) -> PathBuf{
+    let appdir_path = home_path.join(Path::new(".apps/app_name"));
     match create_dir_all(&appdir_path) {
         Err(why) => {
             println!("! {:?}", why.kind());
-            "".to_string()
+            Path::new("").into()
         },
         Ok(_) => {
-            appdir_path.to_string_lossy().to_string()
+            Path::new(&appdir_path).into()
         },
     }
 }
