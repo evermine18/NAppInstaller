@@ -13,13 +13,13 @@ pub fn install(target: &String){
     println!("{}",dt::get_home_dir().display());
 }
 
-fn create_shortcut(target: &String){
-    let mut shortcut = File::create("shortcut.lnk")
+fn create_shortcut(target: &String, app_path : &Path){
+    let mut shortcut = File::create("shortcut.Desktop")
     .expect("Unable to create shortcut");
     let current_dir = env::current_dir().expect("Unable to get current directory");
-    let template_path = current_dir.join("src/static/template.lnk");
+    let template_path = current_dir.join("src/static/template.Desktop");
     let mut data = lnkloader(&template_path.to_string_lossy().to_string()).unwrap_or("".to_string());
-    data = remplace_with_data(data);
+    data = remplace_with_data(data, &app_path.to_str().unwrap());
     shortcut.write_all(data.as_bytes()).expect("Unable to write to shortcut");
 }
 
