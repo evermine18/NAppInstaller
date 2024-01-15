@@ -19,7 +19,7 @@ fn create_shortcut(target: &String, app_path : &Path){
     let current_dir = env::current_dir().expect("Unable to get current directory");
     let template_path = current_dir.join("src/static/template.Desktop");
     let mut data = lnkloader(&template_path.to_string_lossy().to_string()).unwrap_or("".to_string());
-    data = remplace_with_data(data, &app_path.to_str().unwrap());
+    data = remplace_with_data(data, &app_path.to_path_buf());
     shortcut.write_all(data.as_bytes()).expect("Unable to write to shortcut");
 }
 
