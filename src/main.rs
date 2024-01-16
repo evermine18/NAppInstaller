@@ -3,11 +3,12 @@ use iced::{executor, Length, Alignment};
 use iced::{Application, Command, Element, Settings, Theme};
 use iced::widget::{button, Button,Column, Text, ProgressBar, text, Row, Space};
 use installer::install;
+use std::{env, vec::Vec};
 
 fn main() {
-    //GUIApp::run(Settings::default()).expect("Could not run application");
-    let app_name = String::from("./app.AppImage");
-    install(&app_name);
+    GUIApp::run(Settings::default()).expect("Could not run application");
+    //let app_name = String::from("./app.AppImage");
+    //install(&app_name);
 }
 #[derive(Debug, Clone)]
 pub enum Message{
@@ -34,7 +35,14 @@ impl Application for GUIApp {
     fn update(&mut self, message: Message) -> Command<Self::Message> {
         match message {
             Message::ButtonPressed => {
-                println!("Testing action");
+                println!("Installing...");
+                let args: Vec<String> = env::args().collect();
+                if args.len() > 1 && args[1] != "" {
+                    install(&args[1]);
+                }
+                else{
+                    println!("[ERROR] No appimage provided");
+                }
             }
         }
         Command::none()
