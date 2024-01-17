@@ -1,14 +1,18 @@
 mod installer;
+mod appimagelib_test;
 use iced::{executor, Length, Alignment};
 use iced::{Application, Command, Element, Settings, Theme};
 use iced::widget::{button, Button,Column, Text, ProgressBar, text, Row, Space};
 use installer::install;
 use std::{env, vec::Vec};
+use appimagelib_test::test_lib;
 
 fn main() {
-    GUIApp::run(Settings::default()).expect("Could not run application");
+    //GUIApp::run(Settings::default()).expect("Could not run application");
     //let app_name = String::from("./app.AppImage");
     //install(&app_name);
+    test_lib();
+    
 }
 #[derive(Debug, Clone)]
 pub enum Message{
