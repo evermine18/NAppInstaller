@@ -1,17 +1,17 @@
 mod installer;
-mod appimagelib_test;
+mod run;
 use iced::{executor, Length, Alignment};
 use iced::{Application, Command, Element, Settings, Theme};
 use iced::widget::{button, Button,Column, Text, ProgressBar, text, Row, Space};
 use installer::install;
 use std::{env, vec::Vec};
-use appimagelib_test::test_lib;
-
+use run::run_app;
 fn main() {
     //GUIApp::run(Settings::default()).expect("Could not run application");
     //let app_name = String::from("./app.AppImage");
     //install(&app_name);
-    test_lib();
+    //test_lib();
+    //run_app();
     
 }
 #[derive(Debug, Clone)]

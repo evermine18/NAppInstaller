@@ -1,9 +1,10 @@
 use std::env;
 use std::process::Command;
 
-fn run_app() {
+pub fn run_app() {
     let args: Vec<String> = env::args().collect();
-
+    // Printing the arguments passed to the AppImage
+    println!("Arguments: {:?}", args);
     // check if the --install flag is present
     if args.contains(&"--install".to_string()) {
         println!("Installing...");
