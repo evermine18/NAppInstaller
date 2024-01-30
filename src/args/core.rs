@@ -2,7 +2,7 @@
 use std::env;
 
 trait Arguments{
-    fn arguments(&self);
+    fn arguments(&self) -> String;
 }
 
 impl Arguments for String{
