@@ -10,12 +10,13 @@ use run::run_app;
 
 fn main() {
     //GUIApp::run(Settings::default()).expect("Could not run application");
+    let app_name = args::get_appimage_path();
     if args::is_install(){
-        let app_name = args::get_appimage_path();
         install(&app_name);
+    }else{
+        run_app(&app_name);
     }
     //test_lib();
-    //run_app();
 }
 #[derive(Debug, Clone)]
 pub enum Message{
