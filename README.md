@@ -26,3 +26,5 @@ to discuss what you would like to change.
 
 ## License
 [MIT](LICENCE.md)
+
+<!-- ghost :ghost: -->
